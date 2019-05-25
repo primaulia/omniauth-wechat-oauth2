@@ -2,16 +2,16 @@ require "omniauth-oauth2"
 
 module OmniAuth
   module Strategies
-    class Wechat < OmniAuth::Strategies::OAuth2
-      option :name, "wechat"
+    class WechatQiye < OmniAuth::Strategies::OAuth2
+      option :name, "wechat_oa"
       option :client_options, {
-        site:          "https://api.weixin.qq.com",
-        authorize_url: "https://open.weixin.qq.com/connect/qrconnect?#wechat_redirect",
+        site: "https://api.weixin.qq.com",
+        authorize_url: "https://open.weixin.qq.com/connect/oauth2/authorize#wechat_redirect",
         token_url:     "/sns/oauth2/access_token",
         token_method:  :get
       }
 
-      option :authorize_params, {scope: "snsapi_login"}
+      option :authorize_params, {scope: "snsapi_userinfo"}
       option :token_params, {parse: :json}
 
       def callback_url
@@ -34,7 +34,7 @@ module OmniAuth
       end
 
       extra do
-        {raw_info: raw_info}
+        { raw_info: raw_info }
       end
 
       def request_phase
@@ -49,7 +49,7 @@ module OmniAuth
         @raw_info ||= begin
           access_token.options[:mode] = :query
           if access_token["scope"] == "snsapi_userinfo"
-            response = access_token.get("/sns/userinfo", :params => {"openid" => @uid, "lang" => "zh_CN"}, parse: :text)
+            response = access_token.get("/sns/userinfo", :params => {"openid" => @uid, "lang" => "en"}, parse: :text)
             @raw_info = JSON.parse(response.body.gsub(/[\u0000-\u001f]+/, ''))
           else
             @raw_info = {"openid" => @uid }
@@ -70,7 +70,6 @@ module OmniAuth
           }.merge(token_params.to_hash(symbolize_keys: true))
         client.get_token(params, deep_symbolize(options.auth_token_params))
       end
-
     end
   end
 end
