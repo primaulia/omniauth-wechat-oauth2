@@ -2,7 +2,7 @@ require "omniauth-oauth2"
 
 module OmniAuth
   module Strategies
-    class WechatQiye < OmniAuth::Strategies::OAuth2
+    class WechatOa < OmniAuth::Strategies::OAuth2
       option :name, "wechat_oa"
       option :client_options, {
         site: "https://api.weixin.qq.com",
