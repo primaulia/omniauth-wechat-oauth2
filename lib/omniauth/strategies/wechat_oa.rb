@@ -5,7 +5,7 @@ module OmniAuth
     class WechatOa < OmniAuth::Strategies::OAuth2
       option :name, "wechat_oa"
       option :client_options, {
-        site: "https://api.weixin.qq.com",
+        site:          "https://api.weixin.qq.com",
         authorize_url: "https://open.weixin.qq.com/connect/oauth2/authorize#wechat_redirect",
         token_url:     "/sns/oauth2/access_token",
         token_method:  :get
@@ -13,10 +13,6 @@ module OmniAuth
 
       option :authorize_params, {scope: "snsapi_userinfo"}
       option :token_params, {parse: :json}
-
-      def callback_url
-        full_host + script_name + callback_path
-      end
 
       uid do
         raw_info['openid']

@@ -14,10 +14,6 @@ module OmniAuth
       option :authorize_params, {scope: "snsapi_login"}
       option :token_params, {parse: :json}
 
-      def callback_url
-        full_host + script_name + callback_path
-      end
-
       uid do
         raw_info['openid']
       end
