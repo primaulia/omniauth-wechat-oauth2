@@ -37,6 +37,8 @@ module OmniAuth
         params = client.auth_code.authorize_params.merge(authorize_params)
         params["appid"] = params.delete("client_id")
         params["redirect_uri"] = callback_url
+        logger.info(params)
+        logger.info(client.authorize_url(params))
         redirect client.authorize_url(params)
       end
 
